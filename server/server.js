@@ -9,6 +9,9 @@ require("./services/db").connect();
 // routes
 require("./routes")(app);
 
+// dialogflow
+require("./bot/dialogflow");
+
 app.listen(PORT, () => {
   console.log(`The Hacathon is 🏃‍♂️ on port ${PORT}`);
 });

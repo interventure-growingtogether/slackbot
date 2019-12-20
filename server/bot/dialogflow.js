@@ -4,6 +4,17 @@ const apiai = require("apiai");
 require("dotenv").config();
 const app = apiai(process.env.DF_CLIENT_ACCESS_TOKEN);
 
+const handleResponse = ({ result: { action, fulfillment } }) => {
+  const { speech, messages } = fulfillment;
+  console.log(`🉑 Action: ${action}`);
+  console.log(`🗯️Fulfilment: ${speech}`);
+
+  return {
+    action,
+    response: speech
+  };
+};
+
 const sendDialogFlowRequest = text => {
   return new Promise((resolve, reject) => {
     if (!text) reject("Text is empty");
@@ -12,8 +23,7 @@ const sendDialogFlowRequest = text => {
     });
 
     request.on("response", response => {
-      console.log(response);
-      resolve(response);
+      resolve(handleResponse(response));
     });
 
     request.on("error", error => {
@@ -25,5 +35,5 @@ const sendDialogFlowRequest = text => {
   });
 };
 
-// sendDialogFlowRequest("Kako si?");
+// sendDialogFlowRequest("Kako si?").then(r => console.log(r));
 module.exports = sendDialogFlowRequest;
