@@ -11,6 +11,7 @@ require("./routes")(app);
 
 // dialogflow
 require("./bot/dialogflow");
+require("./bot/slack");
 
 app.listen(PORT, () => {
   console.log(`The Hacathon is 🏃‍♂️ on port ${PORT}`);
