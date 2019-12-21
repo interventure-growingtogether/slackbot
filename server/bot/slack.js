@@ -1,5 +1,5 @@
 const { App } = require("@slack/bolt");
-
+const sendDialogFlowRequest = require("./dialogflow");
 require("dotenv").config();
 const SLACK_PORT = process.env.SLACK_PORT || 8080;
 
@@ -26,13 +26,16 @@ app.event("message", async ({ say, message }) => {
   try {
     const { text, user } = message;
 
+    const { action, response } = await sendDialogFlowRequest(text);
+    console.log("🔥 ", action, response);
+
     console.log(`User 🆔 : ${user}`);
-    const image = sendImage("http://placekitten.com/700/500", "atl text");
     // "context", "next", "body", "payload", "event", "message", "say";
-    say(`📣 ${text}`);
-    say({
-      blocks: [image]
-    });
+    say(`📣 ${response}`);
+    // const image = sendImage("http://placekitten.com/700/500", "atl text");
+    // say({
+    //   blocks: [image]
+    // });
     // say("https://files.slack.com/files-pri/T3UBZ29MM-FRK2QN334/img_3742.jpg");
     // say({
     //   blocks: [
