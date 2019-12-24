@@ -39,12 +39,36 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  res.json('PUT successfull');
+  const { id } = req.params;
+  const { link, tags } = req.body;
+  try {
+    console.debug(`Updating article ${id}...`);
+    const result = await updateArticle(id, tags, link);
+    console.debug(`Article ${id} updated successfully.`);
+    res.json(result);
+  } catch (err) {
+    console.error(`Article ${id} update failed!`);
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
+
+router.put('/:id/accept', async (req, res) => {
+  const { id } = req.params;
+  try {
+    console.log(`Accepting article ${id}...`);
+    const result = await acceptArticle(id);
+    console.debug(`Article ${id} accepted`);
+    res.json(result);
+  } catch (err) {
+    console.error(`Accept article ${id} failed with error!`);
+    console.error(err);
+    res.status(500).json(err);
+  }
 });
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-
   try {
     console.debug(`delete article with id ${id}`);
     const result = await deleteArticle(id);
