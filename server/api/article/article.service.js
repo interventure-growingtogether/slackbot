@@ -3,22 +3,19 @@ const Article = require("./article.model");
 const getAllArticles = () => Article.find({});
 
 // add / create new
-const createNewArticle = async (link, tags) => {
+const createNewArticle = (link, tags) => {
   const newArticle = new Article({ tags, link });
   return newArticle.save();
 };
 
 // edit
-const updateArticle = async (id, tags, link) => {
-  return Article.findByIdAndUpdate(id, { tags, link });
-};
+const updateArticle = (id, tags, link) => Article.findByIdAndUpdate(id, { tags, link });
 
 // delete article
-const deleteArticle = async id => Article.findByIdAndDelete(id);
+const deleteArticle =  (id) => Article.findByIdAndDelete(id);
 
 // accept
-const acceptArticle = async id =>
-  Article.findByIdAndUpdate(id, { accept: true });
+const acceptArticle = (id) => Article.findByIdAndUpdate(id, { accepted: true });
 
 module.exports = {
   getAllArticles,
