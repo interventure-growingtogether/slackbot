@@ -2,6 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import App from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';
+import Theme from '../components/theme';
 
 export default class SlackBotApp extends App {
     componentDidMount() {
@@ -20,7 +21,9 @@ export default class SlackBotApp extends App {
                     <title>IV | SlackBot</title>
                 </Head>
                 <CssBaseline />
-                <Component {...pageProps} />
+                <Theme>
+                    <Component {...pageProps} />
+                </Theme>
             </>
         );
     }
