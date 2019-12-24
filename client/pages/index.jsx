@@ -1,19 +1,16 @@
 import React from 'react'
-import { Fab, Tooltip, Typography, Paper, makeStyles } from '@material-ui/core';
+import { Container, Fab, Tooltip, makeStyles } from '@material-ui/core';
 import Head from 'next/head';
-import { Container } from 'next/app';
 import AddIcon from '@material-ui/icons/Add';
 import Header from '../components/header';
+import TitleContainer from '../components/titleContainer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     
   },
-  titleContainer: {
-
-  },
-  description: {
-
+  container: {
+    paddingTop: '1rem'
   },
   addButton: {
     position: 'fixed',
@@ -25,24 +22,20 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
 
+  const title = "Svi postovi";
+  const description = "Neki description, test test test test description description description.Neki description, test test test test description description description.";
+
   return (
     <div>
       <Head>
         <title>IV SlackBot | Članci</title>
       </Head>
       <Header/>
-      <Container fixed>
-        <Paper className={classes.titleContainer}>
-          <Typography variant="h3">
-            Svi postovi
-          </Typography>
-          <Typography className={classes.description}>
-            Neki description, test test test test description description description.
-          </Typography>
-        </Paper>
-        <Paper>
-
-        </Paper>
+      <Container className={classes.container}>
+       <TitleContainer
+        title={title}
+        description={description}
+      />
       </Container>
       <Tooltip title="Add">
         <Fab
