@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Paper, Container, Fab, Tooltip, makeStyles, Link, Chip, Button, Typography, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@material-ui/core';
 import Head from 'next/head';
 import AddIcon from '@material-ui/icons/Add';
@@ -65,7 +65,6 @@ const Home = (props) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const classes = useStyles();
 
-
   function updateData () {
     getArticles().then((data) => {
       setArticles(data)
@@ -120,7 +119,7 @@ const Home = (props) => {
             </Typography>
             {
               articles.filter(article => article.accepted).map((article) => (
-                <Paper elevation={3} className={classes.item}>
+                <Paper key={article._id} elevation={3} className={classes.item}>
                   <div className={classes.itemTags}>
                     {
                       article.tags.map(tag => (
@@ -157,8 +156,8 @@ const Home = (props) => {
               Na čekanju
             </Typography>
             {
-              props.articles.filter(article => !article.accepted).map((article) => (
-                <Paper elevation={3} className={classes.item}>
+              articles.filter(article => !article.accepted).map((article) => (
+                <Paper key={article._id} elevation={3} className={classes.item}>
                   <div className={classes.itemTags}>
                     {
                       article.tags.map(tag => (
