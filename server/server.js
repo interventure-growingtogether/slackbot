@@ -31,7 +31,7 @@ const prepareApp = () => {
 
     // dialogflow
     require("./bot/dialogflow");
-    require("./bot/slack");
+    // require("./bot/slack");
 
     expressServer.listen(PORT, () => {
       console.log(`The Hacathon is 🏃‍♂️ on port ${PORT}`);
