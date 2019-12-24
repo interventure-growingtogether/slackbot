@@ -22,7 +22,7 @@ const prepareApp = () => {
 
     // expressServer.use(clientRoutes(app));
 
-    require("./routes")(app);
+    require("./routes")(expressServer);
 
     // db config & connecting
     require("./services/db").connect();
