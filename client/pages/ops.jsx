@@ -1,8 +1,9 @@
 import React from 'react'
+import Header from '../components/header';
 
 
 const Ops = () => (
-  <div>Ops</div>
+  <Header/>
 )
 
 export default Ops

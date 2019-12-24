@@ -18,7 +18,7 @@ const prepareApp = () => {
     expressServer.use(express.urlencoded({ extended: true }));
     const PORT = process.env.PORT || 8080;
 
-    expressServer.use("/_next", expressStaticGzip("./_next"));
+    expressServer.use("/_next", expressStaticGzip("./client/.next"));
 
     expressServer.use(clientRoutes(app));
 
