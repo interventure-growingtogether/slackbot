@@ -1,7 +1,9 @@
-const Article = require("./artice.model");
+const Article = require("./article.model");
+
+const getAllArticles = () => Article.find({});
 
 // add / create new
-const createNewArticle = async () => {
+const createNewArticle = async (link, tags) => {
   const newArticle = new Article({ tags, link });
   return newArticle.save();
 };
@@ -19,6 +21,7 @@ const acceptArticle = async id =>
   Article.findByIdAndUpdate(id, { accept: true });
 
 module.exports = {
+  getAllArticles,
   createNewArticle,
   updateArticle,
   deleteArticle,
