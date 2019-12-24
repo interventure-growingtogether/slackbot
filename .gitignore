@@ -109,4 +109,5 @@ dist
 
 client/.next/
 _next
+.vscode
 
