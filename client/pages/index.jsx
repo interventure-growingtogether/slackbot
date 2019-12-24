@@ -4,6 +4,7 @@ import Head from 'next/head';
 import AddIcon from '@material-ui/icons/Add';
 import Header from '../components/header';
 import TitleContainer from '../components/titleContainer';
+import { getArticles } from '../utils/dataAccess';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Home = () => {
+const Home = (props) => {
+  console.log(props.articles);
   const classes = useStyles();
 
   const title = "Svi postovi";
@@ -61,6 +63,14 @@ const Home = () => {
       </Tooltip>
     </div>
   )
-}
+};
+
+Home.getInitialProps = async ({ req }) => {
+  const data = await getArticles();
+  return {
+    ...req.props,
+    articles: data
+  };
+};
 
 export default Home
