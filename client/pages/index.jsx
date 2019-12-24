@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Paper, Container, Fab, Tooltip, makeStyles, Link, Chip, Button } from '@material-ui/core';
 import Head from 'next/head';
 import AddIcon from '@material-ui/icons/Add';
 import Header from '../components/header';
 import TitleContainer from '../components/titleContainer';
-import { getArticles } from '../utils/dataAccess';
+import { getArticles, deleteArticle, acceptNewArticle } from '../utils/dataAccess';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
@@ -62,10 +62,30 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   console.log(props.articles);
+  const [articles, setArticles] = useState(props.articles)
   const classes = useStyles();
 
-  const title = "Svi postovi";
-  const description = "Neki description, test test test test description description description.Neki description, test test test test description description description.";
+
+  const title = "Prihvaceni članci";
+  const description = "Na cekanju";
+
+  function updateData () {
+    getArticles().then((data) => {
+      setArticles(data)
+    })
+  }
+
+  function handleDeleteArticle (id) {
+    deleteArticle(id).then(() => {
+      updateData()
+    })
+  }
+
+  function handleAcceptArticle (id){
+    acceptNewArticle(id).then(() => {
+      updateData()
+    })
+  }
 
   return (
     <div>
@@ -83,7 +103,7 @@ const Home = (props) => {
           <div className={classes.dataColumn}>
 
           {
-              props.articles.filter(article => !article.accepted).map((article) => (
+              articles.filter(article => article.accepted).map((article) => (
                 <Paper elevation={3} className={classes.item}>
                   <div className={classes.itemTags}>
                     {
@@ -99,21 +119,13 @@ const Home = (props) => {
                       </Link>
                     </Tooltip>
                   </div>
-                  <div className={classes.itemActions}>
-                    <Tooltip title="Izmeni">
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        className={classes.itemAction}
-                      >
-                        <EditIcon />
-                      </Button>
-                    </Tooltip>
+                  <div className={classes.itemActions}>                    
                     <Tooltip title="Izbriši">
                       <Button 
                         color="default" 
                         variant="contained"
                         className={classes.itemAction}
+                        onClick={() => handleDeleteArticle(article._id)}
                       >
                         <DeleteIcon />
                       </Button>
@@ -148,6 +160,7 @@ const Home = (props) => {
                         color="secondary"
                         variant="contained"
                         className={classes.itemAction}
+                        onClick={() => handleAcceptArticle(article._id)}
                       >
                         <DoneIcon />
                       </Button>
@@ -157,6 +170,7 @@ const Home = (props) => {
                         color="default" 
                         variant="contained"
                         className={classes.itemAction}
+                        onClick={() => handleDeleteArticle(article._id)}
                       >
                         <ClearIcon />
                       </Button>
@@ -184,7 +198,6 @@ const Home = (props) => {
 Home.getInitialProps = async ({ req }) => {
   const data = await getArticles();
   return {
-    ...req.props,
     articles: data
   };
 };
