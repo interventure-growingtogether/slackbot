@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
-import { Paper, Container, Fab, Tooltip, makeStyles, Link, Chip, Button } from '@material-ui/core';
+import { Paper, Container, Fab, Tooltip, makeStyles, Link, Chip, Button, Typography, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from '@material-ui/core';
 import Head from 'next/head';
 import AddIcon from '@material-ui/icons/Add';
 import Header from '../components/header';
-import TitleContainer from '../components/titleContainer';
-import { getArticles, deleteArticle, acceptNewArticle } from '../utils/dataAccess';
-import EditIcon from '@material-ui/icons/Edit';
+import { getArticles, deleteArticle, acceptNewArticle, addNewArticle } from '../utils/dataAccess';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     
   },
@@ -40,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   itemLink: {
     paddingLeft: '1rem',
     flex: 1,
-    maxWidth: 200,
+    maxWidth: 300,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     maxHeight: 20
@@ -61,13 +59,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = (props) => {
-  console.log(props.articles);
-  const [articles, setArticles] = useState(props.articles)
+  const [articles, setArticles] = useState(props.articles);
+  const [tag, setTag] = useState('');
+  const [link, setLink] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const classes = useStyles();
 
-
-  const title = "Prihvaceni članci";
-  const description = "Na cekanju";
 
   function updateData () {
     getArticles().then((data) => {
@@ -87,6 +84,23 @@ const Home = (props) => {
     })
   }
 
+  function handleAddArticle (){
+    addNewArticle(link, tag).then(() => {
+      updateData()
+    })
+  }
+
+  const openModal = () => {
+    setIsAddModalOpen(true);
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setIsAddModalOpen(false);
+    setLink('');
+    setTag('');
+  };
+
   return (
     <div>
       <Head>
@@ -94,15 +108,17 @@ const Home = (props) => {
       </Head>
       <Header/>
       <Container className={classes.container}>
-        <TitleContainer
+        {/* <TitleContainer
           title={title}
           description={description}
-        />
+        /> */}
         <Paper className={classes.dataContainer}>
           {/* ACCEPTED */}
           <div className={classes.dataColumn}>
-
-          {
+            <Typography variant="h4">
+              Prihvaćeni članci
+            </Typography>
+            {
               articles.filter(article => article.accepted).map((article) => (
                 <Paper elevation={3} className={classes.item}>
                   <div className={classes.itemTags}>
@@ -137,7 +153,10 @@ const Home = (props) => {
           </div>
           {/* NOT ACCEPTED */}
           <div className={classes.dataColumn}>
-          {
+            <Typography variant="h4">
+              Na čekanju
+            </Typography>
+            {
               props.articles.filter(article => !article.accepted).map((article) => (
                 <Paper elevation={3} className={classes.item}>
                   <div className={classes.itemTags}>
@@ -187,10 +206,41 @@ const Home = (props) => {
           color="primary"
           aria-label="add"
           className={classes.addButton}
+          onClick={openModal}
         >
           <AddIcon />
         </Fab>
       </Tooltip>
+
+      <Dialog open={isAddModalOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Dodaj novi članak</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Tag"
+            fullWidth
+            onChange={(e) => setTag(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="name"
+            label="link"
+            type="email"
+            fullWidth
+            onChange={(e) => setLink(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Odustani
+          </Button>
+          <Button onClick={handleAddArticle} color="primary">
+            Dodaj
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 };
