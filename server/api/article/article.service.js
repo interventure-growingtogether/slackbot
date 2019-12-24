@@ -1,5 +1,7 @@
 const Article = require("./article.model");
 
+const findByTag = (tags) => Article.find({ tags });
+
 const getAllArticles = () => Article.find({});
 
 // add / create new
@@ -22,5 +24,6 @@ module.exports = {
   createNewArticle,
   updateArticle,
   deleteArticle,
-  acceptArticle
+  acceptArticle,
+  findByTag
 };
