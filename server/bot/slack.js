@@ -6,7 +6,7 @@ const SLACK_PORT = process.env.SLACK_PORT || 8080;
 const delta = (bruto, tax) => {
   const neto1 = bruto - tax;
   const neto2 = 0.88667 * bruto;
-  return neto1 - neto2;
+  return Math.round(neto1 - neto2);
 };
 
 const app = new App({
@@ -28,9 +28,6 @@ const sendImage = (url, alt) => {
   };
 };
 
-const draganaImage =
-  "https://ca.slack-edge.com/T3UBZ29MM-UACGJQV36-6a733a63889d-512";
-
 app.event("message", async ({ say, message }) => {
   try {
     const { text, user } = message;
@@ -44,11 +41,27 @@ app.event("message", async ({ say, message }) => {
     console.log(response);
     switch (action) {
       case "catering":
-        const gagaImage = sendImage(draganaImage, "atl text");
+        // const gagaImage = sendImage(draganaImage, "atl text");
 
         say(`Gaga: ${response}`);
         say({
           blocks: [gagaImage]
+        });
+        break;
+      case "catering":
+        // const gagaImage = sendImage(draganaImage, "atl text");
+        const draganaImage =
+          "https://ca.slack-edge.com/T3UBZ29MM-UACGJQV36-6a733a63889d-512";
+        say(`Gaga: ${response}`);
+        say({
+          blocks: [gagaImage]
+        });
+        break;
+
+      case "sweetfriday":
+        const sfImage = sendImage("https://imgur.com/a/ht0NXcE", "sw");
+        say({
+          blocks: [sfImage]
         });
         break;
       case "delta":
@@ -69,13 +82,18 @@ app.event("message", async ({ say, message }) => {
           say(`${response}`);
         }, 2000);
         break;
-      case "input.unknown":
-        console.log("JOCA SISA ");
-        const whatImage = sendImage(
+      case "subventions":
+        const ilijaImage = sendImage(
           "https://media.giphy.com/media/gKSwiJKM3ABYK0RLVr/giphy.gif",
           "alt"
         );
-        console.log(whatImage);
+        say({ blocks: [ilijaImage] });
+        break;
+      case "input.unknown":
+        const whatImage = sendImage(
+          "https://media.giphy.com/media/ghOb16c0JcfW4wqi2x/giphy.gif",
+          "alt"
+        );
         say({ blocks: [whatImage] });
 
         break;
