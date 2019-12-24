@@ -4,14 +4,17 @@ const apiai = require("apiai");
 require("dotenv").config();
 const app = apiai(process.env.DF_CLIENT_ACCESS_TOKEN);
 
-const handleResponse = ({ result: { action, fulfillment } }) => {
+// console.log(delta(100000, 25000));
+
+const handleResponse = ({ result: { action, fulfillment, parameters } }) => {
   const { speech, messages } = fulfillment;
   console.log(`🉑 Action: ${action}`);
   console.log(`🗯️Fulfilment: ${speech}`);
 
   return {
     action,
-    response: speech
+    response: speech,
+    parameters
   };
 };
 

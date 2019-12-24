@@ -5157,7 +5157,7 @@ function connect(options) {
       error.name = err.name;
       error.stack = err.stack; // __NEXT_DIST_DIR is provided by webpack
 
-      (0, _sourceMapSupport.rewriteStacktrace)(error, "/Users/lazarvasic/Projects/slackbot/client/.next");
+      (0, _sourceMapSupport.rewriteStacktrace)(error, "/Users/lazarvasic/slackbot/client/.next");
       return error;
     }
   };
