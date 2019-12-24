@@ -4,7 +4,7 @@ const expressStaticGzip = require("express-static-gzip");
 require("dotenv").config();
 const next = require("next");
 
-// const clientRoutes = require("./routes/clientRoutes");
+const clientRoutes = require("./clientRoutes");
 const app = next({ dev: true, dir: "./client" });
 const handle = app.getRequestHandler();
 
@@ -20,7 +20,7 @@ const prepareApp = () => {
 
     expressServer.use("/_next", expressStaticGzip("./_next"));
 
-    // expressServer.use(clientRoutes(app));
+    expressServer.use(clientRoutes(app));
 
     require("./routes")(app);
 
@@ -31,7 +31,7 @@ const prepareApp = () => {
 
     // dialogflow
     require("./bot/dialogflow");
-    require("./bot/slack");
+    // require("./bot/slack");
 
     expressServer.listen(PORT, () => {
       console.log(`The Hacathon is 🏃‍♂️ on port ${PORT}`);
