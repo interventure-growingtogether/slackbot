@@ -2,7 +2,7 @@ const { App } = require("@slack/bolt");
 const sendDialogFlowRequest = require("./dialogflow");
 require("dotenv").config();
 const SLACK_PORT = process.env.SLACK_PORT || 8080;
-
+const { createNewArticle } = require("../api/article/article.service.js");
 const delta = (bruto, tax) => {
   const neto1 = bruto - tax;
   const neto2 = 0.88667 * bruto;
@@ -40,6 +40,10 @@ app.event("message", async ({ say, message }) => {
     // "context", "next", "body", "payload", "event", "message", "say";
     console.log(response);
     switch (action) {
+      case "postarticle":
+        createNewArticle(parameters.url, [parameters.tags]);
+        say("Clanak je uspesno dodat ✅");
+        break;
       case "catering":
         // const gagaImage = sendImage(draganaImage, "atl text");
 

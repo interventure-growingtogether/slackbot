@@ -1,10 +1,12 @@
+import fetch from 'isomorphic-unfetch';
+
 const http = (
   url,
   data,
   method = 'post',
   headers = { 'Content-Type': 'application/json' }
 ) =>
-  fetch(url, {
+  fetch(`http://localhost:${process.env.PORT}${url}`, {
     method,
     body: data ? JSON.stringify(data) : undefined,
     headers,

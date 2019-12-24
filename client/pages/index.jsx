@@ -1,9 +1,10 @@
 import React from 'react'
-import { Container, Fab, Tooltip, makeStyles } from '@material-ui/core';
+import { Paper, Container, Fab, Tooltip, makeStyles } from '@material-ui/core';
 import Head from 'next/head';
 import AddIcon from '@material-ui/icons/Add';
 import Header from '../components/header';
 import TitleContainer from '../components/titleContainer';
+import { getArticles } from '../utils/dataAccess';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,6 +13,13 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: '1rem'
   },
+  dataContainer: {
+    marginTop: '1rem',
+    display: 'flex'
+  },
+  dataColumn: {
+    flex: 1
+  },
   addButton: {
     position: 'fixed',
     bottom: 30,
@@ -19,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Home = () => {
+const Home = (props) => {
+  console.log(props.articles);
   const classes = useStyles();
 
   const title = "Svi postovi";
@@ -32,10 +41,16 @@ const Home = () => {
       </Head>
       <Header/>
       <Container className={classes.container}>
-       <TitleContainer
-        title={title}
-        description={description}
-      />
+        <TitleContainer
+          title={title}
+          description={description}
+        />
+        <Paper className={classes.dataContainer}>
+          <div className={classes.dataColumn}>
+          </div>
+          <div className={classes.dataColumn}>
+          </div>
+        </Paper>
       </Container>
       <Tooltip title="Add">
         <Fab
@@ -48,6 +63,14 @@ const Home = () => {
       </Tooltip>
     </div>
   )
-}
+};
+
+Home.getInitialProps = async ({ req }) => {
+  const data = await getArticles();
+  return {
+    ...req.props,
+    articles: data
+  };
+};
 
 export default Home
