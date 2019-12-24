@@ -86,13 +86,13 @@ const Home = (props) => {
 
   function handleAddArticle (){
     addNewArticle(link, tag).then(() => {
-      updateData()
+      updateData();
+      handleClose();
     })
   }
 
   const openModal = () => {
     setIsAddModalOpen(true);
-    handleClose();
   };
 
   const handleClose = () => {
