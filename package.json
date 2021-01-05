@@ -25,7 +25,7 @@
     "@slack/events-api": "^2.3.0",
     "@slack/web-api": "^5.6.0",
     "apiai": "^4.0.3",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "dialogflow": "^1.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
